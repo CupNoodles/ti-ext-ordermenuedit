@@ -54,8 +54,11 @@ class Extension extends BaseExtension
         AdminController::extend(function ($controller) {
             if( in_array('~/app/admin/views/orders', $controller->partialPath)){
                 array_unshift($controller->partialPath, '~/extensions/cupnoodles/ordermenuedit/views');
+                array_unshift($controller->viewPath, '~/extensions/cupnoodles/ordermenuedit/views/orders');
             }
         });
+
+
 
         // Enable save buttons on Order View
         Event::listen('admin.form.extendFieldsBefore', function (Form $form) {
@@ -68,7 +71,7 @@ class Extension extends BaseExtension
         });
 
 
-        // Change the edit link on Orders List View to cupnoodles/ordermenuedit/edit{id} so that the form eventually submits to the extended controller
+        // Change the edit link on Orders List View to cupnoodles/ordermenuedit/edit{id} so that the form submits to the extended controller
         Orders::extend(function ($controller){
             if($controller->listConfig['list']['model'] == 'Admin\Models\Orders_model'){
                 $controller->listConfig['list']['configFile'] = 'extensions/cupnoodles/ordermenuedit/models/config/orders_model';
@@ -78,13 +81,7 @@ class Extension extends BaseExtension
     }
 
 
-    public function registerFormWidgets()
-    {
-        return ['CupNoodles\PriceByWeight\FormWidgets\OrderMenuEdit' => [
-            'label' => 'Order Menu Edit',
-            'code' => 'cupnoodles\ordermenuedit',
-        ]];
-    }
+
 
     /**
      * Registers any front-end components implemented in this extension.

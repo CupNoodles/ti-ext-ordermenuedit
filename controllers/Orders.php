@@ -33,14 +33,35 @@ class Orders extends BaseOrders{
     public function edit_onSave($context, $recordId){
 
         $data = $this->getOrderMenuData();
+
         foreach($data as $order_menu_id=>$vals){
-            $model = Order_Menus::where('order_menu_id', $order_menu_id)->first();
-            foreach($vals as $attr=>$value){
-                $model->{$attr} = $value;
+            if($order_menu_id == 'new'){
+
             }
-            DB::transaction(function () use ($model) {
-                    $model->save();
-            });
+            else{
+                $model = Order_Menus::where('order_menu_id', $order_menu_id)->first();
+
+                if(isset($vals['delete']) && $vals['delete'] == 'delete'){
+                    $model->delete();
+                }
+                else{
+                    // order_line_ready is a checkbox, fill it in as false if we don't get a value in post data. 
+                    if(!isset($vals['order_line_ready'])){
+                        $vals['order_line_ready'] = 0;
+                    }
+                    if(isset($vals['actual_amt']) && $vals['actual_amt'] == ''){
+                        $vals['actual_amt'] = null;
+                    }
+                    foreach($vals as $attr=>$value){
+                        $model->{$attr} = $value;
+                    }
+        
+                    DB::transaction(function () use ($model) {
+                            $model->save();
+                    });
+                }
+    
+            }
         }
 
         // continue on saving order info
