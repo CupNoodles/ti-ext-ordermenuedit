@@ -2,6 +2,7 @@
     $menuItems = $model->getOrderMenus();
     $menuItemsOptions = $model->getOrderMenuOptions();
     $orderTotals = $model->getOrderTotals();
+    $menusEnabled =  $this->controller->getMenus();
 @endphp
 <div class="table-responsive">
     <table class="table">
@@ -98,7 +99,17 @@
                 </div>
             </td>
             <td colspan="4">
-                
+                <select id="form-field-coupon-menus" name="Order_Menus[new][menu_id]" data-enable-filtering="" data-enable-case-insensitive-filtering="">
+                    <option value="0">
+                        --- Select an item to add ---
+                    </option>
+                    @foreach($menusEnabled as $menu)
+                        <option value="{{ $menu['menu_id'] }}">
+                            {{ $menu['menu_name']}} 
+                        </option>
+                    @endforeach
+                </select>
+            
             </td>
         </tr>
         <tr>

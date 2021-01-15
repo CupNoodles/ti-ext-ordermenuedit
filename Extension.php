@@ -66,7 +66,7 @@ class Extension extends BaseExtension
                 Event::listen('admin.toolbar.extendButtons', function (Toolbar $toolbar) {
                     $toolbar->buttons['save']['context'][] = 'edit';
                     $toolbar->buttons['saveClose']['context'][] = 'edit';
-                });						
+                });
             }
         });
 
