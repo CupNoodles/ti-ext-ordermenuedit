@@ -55,7 +55,9 @@ $config['list']['filter'] = [
 ];
 
 $config['list']['toolbar'] = [
+
     'buttons' => [
+        
         'delete' => [
             'label' => 'lang:admin::lang.button_delete',
             'class' => 'btn btn-danger',
@@ -155,34 +157,6 @@ $config['list']['columns'] = [
     ],
 ];
 
-$config['form']['toolbar'] = [
-    'buttons' => [
-        'save' => [
-            'label' => 'lang:admin::lang.button_save',
-            'class' => 'btn btn-primary',
-            'data-request' => 'onSave',
-            'data-progress-indicator' => 'admin::lang.text_saving',
-            'context' => ['create'],
-        ],
-        'saveClose' => [
-            'label' => 'lang:admin::lang.button_save_close',
-            'class' => 'btn btn-default',
-            'data-request' => 'onSave',
-            'data-request-data' => 'close:1',
-            'data-progress-indicator' => 'admin::lang.text_saving',
-            'context' => ['create'],
-        ],
-        'delete' => [
-            'label' => 'lang:admin::lang.button_icon_delete',
-            'class' => 'btn btn-danger',
-            'data-request' => 'onDelete',
-            'data-request-data' => "_method:'DELETE'",
-            'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
-            'data-progress-indicator' => 'admin::lang.text_deleting',
-            'context' => ['edit'],
-        ],
-    ],
-];
 
 $config['form']['fields'] = [
     '_info' => [
@@ -362,5 +336,37 @@ $config['form']['tabs'] = [
         ],
     ],
 ];
+
+$config['form']['toolbar'] = [
+    
+
+    'buttons' => [
+        'save' => [
+            'label' => 'lang:admin::lang.button_save',
+            'class' => 'btn btn-primary',
+            'data-request' => 'onSave',
+            'data-progress-indicator' => 'admin::lang.text_saving',
+            'context' => ['create'],
+        ],
+        'saveClose' => [
+            'label' => 'lang:admin::lang.button_save_close',
+            'class' => 'btn btn-default',
+            'data-request' => 'onSave',
+            'data-request-data' => 'close:1',
+            'data-progress-indicator' => 'admin::lang.text_saving',
+            'context' => ['create'],
+        ],
+        'delete' => [
+            'label' => 'lang:admin::lang.button_icon_delete',
+            'class' => 'btn btn-danger',
+            'data-request' => 'onDelete',
+            'data-request-data' => "_method:'DELETE'",
+            'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
+            'data-progress-indicator' => 'admin::lang.text_deleting',
+            'context' => ['edit'],
+        ],
+    ],
+];
+
 
 return $config;

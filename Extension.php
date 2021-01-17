@@ -58,12 +58,12 @@ class Extension extends BaseExtension
             }
         });
 
-
-
         // Enable save buttons on Order View
         Event::listen('admin.form.extendFieldsBefore', function (Form $form) {
             if ($form->model instanceof Orders_model) {
+                
                 Event::listen('admin.toolbar.extendButtons', function (Toolbar $toolbar) {
+                    
                     $toolbar->buttons['save']['context'][] = 'edit';
                     $toolbar->buttons['saveClose']['context'][] = 'edit';
                 });

@@ -8,6 +8,7 @@ use Admin\Controllers\Orders as BaseOrders;
 
 use DB;
 use Schema;
+use DOMDocument;
 
 use Admin\Models\Menus_model;
 
@@ -165,6 +166,20 @@ class Orders extends BaseOrders{
 
         // continue on saving order info
         parent::edit_onSave($context, $recordId);
+    }
+
+    // so this i pretty janky but I prefer the save buttons on the bottom of the form. 
+    public function renderForm($options = []){
+        $r =  parent::renderForm($options); 
+        $dom = new DOMDocument();
+        $r = str_replace(' & ', ' &amp; ', $r);
+        $dom->loadHTML($r);
+
+        $divs = $dom->getElementsByTagName('div')->item(0);
+        $divs->parentNode->removeChild($divs);
+        $dom->appendChild($divs);
+        return $dom->saveHTML();
+        
     }
 
     protected function getOrderMenuData()
