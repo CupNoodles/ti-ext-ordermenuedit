@@ -25,7 +25,7 @@
                         uom_tag and uom_decimals are introduced in cupnoodles.pricebyweight. While this extension should work independently of that, 
                         it's written to be used together, so ymmv if you're using one and not the other. 
                     --}}
-                    @if($menuItem->uom_tag != '')
+                    @if(isset($menuItem->uom_tag) && $menuItem->uom_tag != '')
                         {{ number_format($menuItem->quantity, $menuItem->uom_decimals) }} 
                         {{ $menuItem->uom_tag }}
                         x
