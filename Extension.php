@@ -53,9 +53,17 @@ class Extension extends BaseExtension
         // Push extension views into $partialPath since this isn't a formwidget
         AdminController::extend(function ($controller) {
             if( in_array('~/app/admin/views/orders', $controller->partialPath)){
-                array_unshift($controller->partialPath, '~/extensions/cupnoodles/ordermenuedit/views');
-                array_unshift($controller->viewPath, '~/extensions/cupnoodles/ordermenuedit/views/orders');
+                array_unshift($controller->partialPath, 'extensions/cupnoodles/ordermenuedit/views/');
+                array_unshift($controller->viewPath, 'extensions/cupnoodles/ordermenuedit/views/orders');
             }
+            // if priceByWeight is installed, you may get a mild race condition on these partialPaths (pricebyweight also has a views/orders/form/order_menu.blade.php)
+            if (($key = array_search('~/extensions/cupnoodles/pricebyweight/views', $controller->partialPath)) !== false) {
+                unset($controller->partialPath[$key]);
+            }
+            if (($key = array_search('~/extensions/cupnoodles/pricebyweight/views/orders', $controller->viewPath)) !== false) {
+                unset($controller->viewPath[$key]);
+            }
+
         });
 
         // Enable save buttons on Order View
@@ -71,7 +79,7 @@ class Extension extends BaseExtension
         });
 
 
-        // Change the edit link on Orders List View to cupnoodles/ordermenuedit/edit{id} so that the form submits to the extended controller
+        // Change the edit link on Orders List View to cupnoodles/ordermenuedit/edit/{id} so that the form submits to the extended controller
         Orders::extend(function ($controller){
             if($controller->listConfig['list']['model'] == 'Admin\Models\Orders_model'){
                 $controller->listConfig['list']['configFile'] = 'extensions/cupnoodles/ordermenuedit/models/config/orders_model';
