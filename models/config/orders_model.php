@@ -25,8 +25,8 @@ $config['list']['filter'] = [
         ],
         'status' => [
             'label' => 'lang:admin::lang.text_filter_status',
-            'type' => 'select',
-            'conditions' => 'status_id = :filtered',
+            'type' => 'selectlist',
+            'conditions' => 'status_id IN(:filtered)',
             'modelClass' => 'Admin\Models\Statuses_model',
             'options' => 'getDropdownOptionsForOrder',
         ],
@@ -34,10 +34,8 @@ $config['list']['filter'] = [
             'label' => 'lang:admin::lang.orders.text_filter_order_type',
             'type' => 'select',
             'conditions' => 'order_type = :filtered',
-            'options' => [
-                '1' => 'lang:admin::lang.orders.text_delivery',
-                '2' => 'lang:admin::lang.orders.text_collection',
-            ],
+            'modelClass' => 'Admin\Models\Locations_model',
+            'options' => 'getOrderTypeOptions',
         ],
         'payment' => [
             'label' => 'lang:admin::lang.orders.text_filter_payment',
@@ -55,9 +53,7 @@ $config['list']['filter'] = [
 ];
 
 $config['list']['toolbar'] = [
-
     'buttons' => [
-        
         'delete' => [
             'label' => 'lang:admin::lang.button_delete',
             'class' => 'btn btn-danger',
@@ -84,7 +80,7 @@ $config['list']['columns'] = [
         'label' => 'lang:admin::lang.column_id',
         'searchable' => TRUE,
     ],
-    'location' => [
+    'location_name' => [
         'label' => 'lang:admin::lang.orders.column_location',
         'relation' => 'location',
         'select' => 'location_name',
@@ -104,6 +100,7 @@ $config['list']['columns'] = [
     'order_time_is_asap' => [
         'label' => 'lang:admin::lang.orders.label_time_is_asap',
         'type' => 'switch',
+        'cssClass' => 'text-center',
         'onText' => 'lang:admin::lang.text_yes',
         'offText' => 'lang:admin::lang.text_no',
     ],
@@ -157,6 +154,43 @@ $config['list']['columns'] = [
     ],
 ];
 
+
+
+$config['form']['toolbar'] = [
+    'buttons' => [
+        'back' => [
+            'label' => 'lang:admin::lang.button_icon_back',
+            'class' => 'btn btn-default',
+            'href' => 'orders',
+        ],
+        'save' => [
+            'label' => 'lang:admin::lang.button_save',
+            'context' => ['create', 'edit'],
+            'partial' => 'form/toolbar_save_button',
+            'saveActions' => ['continue', 'close'],
+            'class' => 'btn btn-primary',
+            'data-request' => 'onSave',
+            'data-progress-indicator' => 'admin::lang.text_saving',
+        ],
+        'saveClose' => [
+            'label' => 'lang:admin::lang.button_save_close',
+            'class' => 'btn btn-default',
+            'data-request' => 'onSave',
+            'data-request-data' => 'close:1',
+            'data-progress-indicator' => 'admin::lang.text_saving',
+            'context' => ['create', 'edit'],
+        ],
+        'delete' => [
+            'label' => 'lang:admin::lang.button_icon_delete',
+            'class' => 'btn btn-danger',
+            'data-request' => 'onDelete',
+            'data-request-data' => "_method:'DELETE'",
+            'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
+            'data-progress-indicator' => 'admin::lang.text_deleting',
+            'context' => ['edit'],
+        ],
+    ],
+];
 
 $config['form']['fields'] = [
     '_info' => [
@@ -301,6 +335,8 @@ $config['form']['tabs'] = [
         'status_history' => [
             'tab' => 'lang:admin::lang.orders.text_status_history',
             'type' => 'datatable',
+            'useAjax' => TRUE,
+            'defaultSort' => ['status_history_id', 'desc'],
             'columns' => [
                 'date_added_since' => [
                     'title' => 'lang:admin::lang.orders.column_time_date',
@@ -322,6 +358,8 @@ $config['form']['tabs'] = [
         'payment_logs' => [
             'tab' => 'lang:admin::lang.orders.text_payment_logs',
             'type' => 'datatable',
+            'useAjax' => TRUE,
+            'defaultSort' => ['payment_log_id', 'desc'],
             'columns' => [
                 'date_added_since' => [
                     'title' => 'lang:admin::lang.orders.column_time_date',
@@ -337,36 +375,6 @@ $config['form']['tabs'] = [
     ],
 ];
 
-$config['form']['toolbar'] = [
-    
-
-    'buttons' => [
-        'save' => [
-            'label' => 'lang:admin::lang.button_save',
-            'class' => 'btn btn-primary',
-            'data-request' => 'onSave',
-            'data-progress-indicator' => 'admin::lang.text_saving',
-            'context' => ['create'],
-        ],
-        'saveClose' => [
-            'label' => 'lang:admin::lang.button_save_close',
-            'class' => 'btn btn-default',
-            'data-request' => 'onSave',
-            'data-request-data' => 'close:1',
-            'data-progress-indicator' => 'admin::lang.text_saving',
-            'context' => ['create'],
-        ],
-        'delete' => [
-            'label' => 'lang:admin::lang.button_icon_delete',
-            'class' => 'btn btn-danger',
-            'data-request' => 'onDelete',
-            'data-request-data' => "_method:'DELETE'",
-            'data-request-confirm' => 'lang:admin::lang.alert_warning_confirm',
-            'data-progress-indicator' => 'admin::lang.text_deleting',
-            'context' => ['edit'],
-        ],
-    ],
-];
 
 
 return $config;
