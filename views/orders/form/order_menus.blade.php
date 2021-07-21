@@ -3,6 +3,7 @@
     $menuItemsOptions = $model->getOrderMenuOptions();
     $orderTotals = $model->getOrderTotals();
     $menusEnabled =  $this->controller->getMenus();
+
 @endphp
 <div class="table-responsive">
     <table class="table">
@@ -55,12 +56,14 @@
                             </label>
                     </div>
                 </td>
-                <td><b>{{ $menuItem->name }}</b>
+                <td>
+                    <i class="fas fa-edit cursor-pointer"></i>
+                    <b>{{ $menuItem->name }}</b>
+
                     @if($menuItemOptions = $menuItemsOptions->get($menuItem->order_menu_id))
-                        <ul class="list-unstyled">
+                        <ul class="list-unstyled ">
                             @foreach($menuItemOptions as $menuItemOption)
                                 <li>
-                                    {{ $menuItemOption->quantity }}x
                                     {{ $menuItemOption->order_option_name }}&nbsp;
                                     @if($menuItemOption->order_option_price > 0)
                                         ({{ currency_format($menuItemOption->quantity * $menuItemOption->order_option_price) }}
@@ -69,6 +72,34 @@
                                 </li>
                             @endforeach
                         </ul>
+
+                        <div>
+                            @foreach($menusEnabled->where('menu_id', $menuItem->menu_id)->first()->menu_options as $menu_option)
+                                
+                                
+                            </label>
+                                </div>
+                                {{ $menu_option->option_name }}
+                                @php
+                                    $option = Admin\Models\Menu_item_options_model::with('option')
+                                    ->where('menu_option_id', $menu_option->menu_option_id)->first();
+                                @endphp
+                                @if($menu_option['display_type'] == 'radio')
+                                <div class="custom-control custom-checkbox mb-2">
+                                    @foreach($option->option_values as $value)
+                                        <input type="radio" id="order_menu_edit_option_{{$menu_option->menu_option_id}}_{{$value->option_value_id}}" class="custom-control-input"  name="Order_Menus[{{$menuItem->order_menu_id}}][menu_options][{{$menu_option->menu_option_id}}]" value="{{$value->option_value_id}}" />
+                                        <label class="custom-control-label" for="order_menu_edit_option_{{$menu_option->menu_option_id}}">
+                                            {{ $value->value }}
+                                        </label>
+                                    @endforeach
+                                @elseif($menu_option['display_type'] == 'checkbox')
+                                    <input type="checkbox" id="order_menu_edit_option_{{$menu_option->menu_option_id}}" class="custom-control-input"  name="Order_Menus[{{$menuItem->order_menu_id}}][menu_options][{{$menu_option->menu_option_id}}]" value="1" {{ $menuItem->order_line_ready ? 'checked' : ''}}/>
+                                    <label class="custom-control-label" for="order_menu_edit_line_ready_{{$menuItem->order_menu_id}}">
+                                @endif
+                                
+                            @endforeach
+                            
+                        </div>                
                     @endif
                     @if(!empty($menuItem->comment))
                         <p class="font-weight-bold">{{ $menuItem->comment }}</p>
