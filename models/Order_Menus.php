@@ -23,6 +23,7 @@ class Order_Menus extends Model{
     public $relation = [
         'belongsTo' => [
             'order' => ['Admin\Models\Orders_model'],
+            'menus' => ['Admin\Models\Menus_model', 'foreignKey' => 'menu_id', 'otherKey' => 'menu_id']
         ],
     ];
 

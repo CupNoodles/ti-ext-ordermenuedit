@@ -1,5 +1,9 @@
 ## Order Menu Edit
 
+## Dev Notes
+
+This extension is written specifically for use at osakana.nyc, and therefore is meant to be used in conjunction with the cupnoodles/pricebybweight extentions, and likewise is rather incomplete and shouldn't be considered a general purpose extention. For exmaple, it currently only supports option editing for the types 'checkbox' and 'radio', since those are the only ones used at the main store. The code itself can be used as a proof of concept for others, but it's not recommended to install this on any other stores as-is. 
+
 Order Menu Edit has the following features:
 
 - adds an 'Actual Amount' colunm to order_menus, to log differenced between and ordered amount and a delivered amount
@@ -8,11 +12,6 @@ Order Menu Edit has the following features:
 - can add/delete menu lines from admin 
 - add/delete/edit actions are logged in the order status history 
 - save button is moved to the bottom of the admin order form (this is my personal preference)
-
-What needs to be added still: 
-
-- a modal formwidget to edit menu lines would be much cleaner, and allow for editing of order line comments as well as option values. Until that's in place, menu options cannot be edited through the admin. 
-- add/delete should be handled by modal UI to clean up the admin page
 
 # Usage
 
