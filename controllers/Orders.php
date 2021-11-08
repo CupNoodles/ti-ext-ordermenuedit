@@ -164,6 +164,7 @@ class Orders extends BaseOrders{
                 }
                 else{
 
+
                     // order_line_ready is a checkbox, fill it in as false if we don't get a value in post data. 
                     if(!isset($vals['order_line_ready'])){
                         $vals['order_line_ready'] = 0;
@@ -171,15 +172,15 @@ class Orders extends BaseOrders{
                     if(isset($vals['actual_amt']) && $vals['actual_amt'] == ''){
                         $vals['actual_amt'] = null;
                     }
+                    $new_qty = $vals['actual_amt'] ? $vals['actual_amt'] : $model->quantity;
 
-                    $vals['subtotal'] = ($vals['actual_amt'] ? $vals['actual_amt'] : $model->quantity ) * $model->price;
-                    
                     $update_str = '';
+                    $price_diff = 0;
 
                     $options = Menu_item_options_model::where('menu_id', $model->menu_id)->get();
                     foreach($options as $menu_option){
                         if(isset($vals['menu_options']) && isset($vals['menu_options'][$menu_option->menu_option_id]) ){ // update or insert
-                            $price_diff = 0;
+                            
                             foreach($vals['menu_options'] as $order_menu_option_id=>$option_values_str){
                                 
                                 $option_values = json_decode($option_values_str, false);
@@ -231,7 +232,7 @@ class Orders extends BaseOrders{
                         }
                     }
                     $model->price = $menus_model->menu_price + $price_diff;
-                    $model->subtotal = $model->price * $price_qty;
+                    $model->subtotal = $model->price * $new_qty;
 
 
                     if($update_str != ''){
